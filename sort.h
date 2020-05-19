@@ -20,5 +20,5 @@ typedef enum {
 typedef Bool(*Predicate)(Object,Object);
 
 Array_ptr selection_sort(Array_ptr,Predicate);
-
+Array_ptr bubble_sort(Array_ptr, Predicate);
 #endif
