@@ -3,9 +3,11 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "linked_list.h"
 
 typedef void * Object;
+
+#include "linked_list.h"
+
 typedef struct
 {
   Object * elements;
@@ -23,4 +25,6 @@ typedef Bool(*Predicate)(Object,Object);
 Array_ptr selection_sort(Array_ptr,Predicate);
 Array_ptr bubble_sort(Array_ptr, Predicate);
 Array_ptr insertion_sort(Array_ptr, Predicate);
+
+List_ptr selection_sort_linked_list(List_ptr, Predicate);
 #endif
