@@ -1,9 +1,10 @@
-#include "linkedlist.h"
+#include "sort.h"
 
 Node_ptr create_node(Object value)
 {
   Node_ptr new_node = malloc(sizeof(Node));
   new_node->element = value;
+  new_node->prev = NULL;
   new_node->next = NULL;
   return new_node;
 }
@@ -25,6 +26,7 @@ Status add_to_list(List_ptr list, Object value)
     ptr_to_set = &list->last->next;
   }
   (*ptr_to_set) = new_node;
+  new_node->prev = list->last;
   list->last = new_node;
   list->length++;
   return Success;
@@ -36,10 +38,13 @@ Status add_to_start(List_ptr list, Object value)
   if (list->first==NULL)
   {
     list->last = new_node;
+    list->first = new_node;
+    return Success;
   }
   Node_ptr temp = list->first;
   list->first = new_node;
-  list->first->next = temp;
+  temp->prev = new_node;
+  new_node->next = temp;
   list->length++;
   return Success;
 }
@@ -67,7 +72,9 @@ Status insert_at(List_ptr list, Object value, int position)
     if(count == position){
       Node_ptr temp = p_walk->next;
       p_walk->next = new_node;
+      new_node->prev = p_walk;
       new_node->next = temp;
+      temp->prev = new_node;
       list->length++;
       return Success;
     }
@@ -91,6 +98,7 @@ Object remove_from_start(List_ptr list)
   Node_ptr temp = list->first->next;
   free(list->first);
   list->first = temp;
+  list->first->prev = NULL;
   list->length--;
   return element;
 }
@@ -151,6 +159,7 @@ Object remove_at(List_ptr list, int position)
     element = node_to_remove->element;
   }
   p_walk->next = node_to_remove->next;
+  node_to_remove->next->prev = p_walk;
   free(node_to_remove);
   list->length--;
   return element;
@@ -188,4 +197,33 @@ List_ptr reverse(List_ptr list)
     p_walk = p_walk->next;
   }
   return result;
+}
+
+Status swap_node(List_ptr list, Node_ptr a, Node_ptr b)
+{
+  Node_ptr temp1 = a->prev;
+  Node_ptr temp2 = b->prev;
+  temp1 && (temp1->next = b);
+  b->prev = temp1;
+  temp2 && (temp2->next = a);
+  a->prev = temp2;
+  temp1 = a->next;
+  temp2 = b->next;
+  temp1 && (temp1->prev = b);
+  b->next = temp1;
+  temp2 && (temp2->prev = a);
+  a->next = temp2;
+  temp1 = a;
+  while (temp1->prev!=NULL)
+  {
+    temp1 = temp1->prev;
+  }
+  list->first = temp1;
+  temp1 = a;
+  while (temp1->next!=NULL)
+  {
+    temp1 = temp1->next;
+  }
+  list->last = temp1;
+  return Success;
 }
