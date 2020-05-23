@@ -28,4 +28,5 @@ Array_ptr insertion_sort(Array_ptr, Predicate);
 
 List_ptr selection_sort_linked_list(List_ptr, Predicate);
 List_ptr bubble_sort_linked_list(List_ptr, Predicate);
+List_ptr insertion_sort_linked_list(List_ptr, Predicate);
 #endif

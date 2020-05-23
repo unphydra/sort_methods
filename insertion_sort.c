@@ -16,3 +16,27 @@ Array_ptr insertion_sort(Array_ptr list, Predicate predicate)
   }
   return list;
 }
+
+List_ptr insertion_sort_linked_list(List_ptr list, Predicate predicate)
+{
+  Node_ptr p_walk = list->first;
+  while (p_walk!=NULL)
+  {
+    Node_ptr prev = p_walk->prev;
+    Bool has_swap = False;
+    while (p_walk->prev!=NULL)
+    {
+      if (predicate(p_walk->element,p_walk->prev->element))
+      {
+        has_swap = True;
+        swap_node(list,p_walk,p_walk->prev);
+      } else break;
+    }
+    if (has_swap)
+    {
+      p_walk = prev;
+    }
+    p_walk= p_walk->next;
+  }
+  return list;
+}
